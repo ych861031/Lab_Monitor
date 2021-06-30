@@ -33,7 +33,7 @@ class DatabaseViewSet(viewsets.ModelViewSet):
         # print(ip)
 
         DB = ConnectDB()
-        sql = "SELECT * FROM `gpu_info` WHERE `ip`='{}' ORDER BY timestamp DESC;".format(
+        sql = "SELECT * FROM `gpu_info` WHERE `ip`='{}' ORDER BY timestamp DESC LIMIT 10;".format(
             ip)
         df = DB.getDFReponse(sql)
 
