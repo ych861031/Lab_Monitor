@@ -76,10 +76,9 @@ class App extends React.Component {
           return i * 80;
         },
       });
-    const cors = "https://cors-anywhere.herokuapp.com/";
     let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
     axios
-      .get(`${cors}${url}`, {
+      .get(url, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
