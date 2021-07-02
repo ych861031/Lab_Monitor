@@ -14,6 +14,7 @@ function Ip_list(props) {
       <div
         className="ip"
         style={{ color: props.font_color }}
+        onMouseOver={props.onMouseOver}
         onClick={props.onClick}
       >
         {data.ip}
