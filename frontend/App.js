@@ -125,7 +125,7 @@ class App extends React.Component {
       });
   }
   ipHover(event) {
-    query_ip = event.currentTarget.innerHTML;
+    let query_ip = event.currentTarget.innerHTML;
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
     axios
       .get(url)
