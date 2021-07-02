@@ -59,6 +59,7 @@ class App extends React.Component {
       });
   }
   fanClick() {
+    this.fanHover;
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#fan").show();
@@ -183,7 +184,7 @@ class App extends React.Component {
           <div
             id="fan_ori"
             className="family fan_family"
-            onMouseOver={this.fanHover}
+            // onMouseOver={this.fanHover}
             onClick={this.fanClick}
           >
             范家
