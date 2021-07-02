@@ -31,21 +31,23 @@ class App extends React.Component {
     this.state = {
       font_color: "#caf0f8",
       ip_datas: [],
-      gpu_utilazations: 0,
+      ip_title: "127.0.0.1",
+      gpu_id: 0,
+      timestamp: "2021/06/29",
       gpu_memory_uses: 0,
+      gpu_memory_all: 0,
+      gpu_utilazations: 0,
       gpu_temperature: 0,
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
-      ip_title: "127.0.0.1",
-      gpu_id: 0,
       user_name: "楊仲軒",
-      timestamp: "2021/06/29",
     };
     this.fanClick = this.fanClick.bind(this);
     this.fanHover = this.fanHover.bind(this);
     this.zhengClick = this.zhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
+    this.ipHover = this.ipHover.bind(this);
   }
 
   fanHover() {
@@ -119,6 +121,31 @@ class App extends React.Component {
         delay: function (el, i, l) {
           return i * 80;
         },
+      });
+  }
+  ipHover(event) {
+    query_ip = event.currentTarget.innerHTML;
+    let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
+    axios
+      .get(url)
+      .then((response) => response.data)
+      .then((data) => {
+        this.setState({
+          gpu_id: data.gpu_id,
+          timestamp: data.timestamp,
+          gpu_memory_uses: data.gpu_memory_uses,
+          gpu_memory_all: data.gpu_memory_all,
+          gpu_utilazations: data.gpu_utilazations,
+          gpu_temperature: data.gpu_temperature,
+        });
+        console.log(
+          data.gpu_id,
+          data.timestamp,
+          data.gpu_memory_uses,
+          data.gpu_memory_all,
+          data.gpu_utilazations,
+          data.gpu_temperature
+        );
       });
   }
   ipClick(event) {
@@ -214,6 +241,7 @@ class App extends React.Component {
           <Ip_list
             ip_datas={this.state.ip_datas}
             font_color={this.state.font_color}
+            onMouseOver={this.ipHover}
             onClick={this.ipClick}
           ></Ip_list>
         </div>
