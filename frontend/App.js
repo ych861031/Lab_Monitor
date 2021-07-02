@@ -53,7 +53,8 @@ class App extends React.Component {
 
   fanHover() {
     let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
-    fetch(url)
+    axios
+      .get(url)
       .then((response) => response.data)
       .then((data) => {
         this.setState({ ip_datas: data });
