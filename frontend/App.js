@@ -30,7 +30,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       font_color: "#caf0f8",
-      ip_datas,
+      ip_datas: [],
       gpu_utilazations: 0,
       gpu_memory_uses: 0,
       gpu_temperature: 0,
