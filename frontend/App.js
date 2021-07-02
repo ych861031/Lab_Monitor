@@ -52,7 +52,7 @@ class App extends React.Component {
   }
 
   fanHover() {
-    let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
+    let url = `https://140.115.51.115:9999/api/serverInfo/F/`;
     axios
       .get(url)
       .then((response) => response.data)
@@ -126,7 +126,7 @@ class App extends React.Component {
   }
   ipHover(event) {
     let query_ip = event.currentTarget.innerHTML;
-    let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
+    let url = `https://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
     axios
       .get(url)
       .then((response) => response.data)
