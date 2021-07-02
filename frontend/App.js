@@ -140,12 +140,13 @@ class App extends React.Component {
           gpu_temperature: data.gpu_temperature,
         });
         console.log(
-          data.gpu_id,
-          data.timestamp,
-          data.gpu_memory_uses,
-          data.gpu_memory_all,
-          data.gpu_utilazations,
-          data.gpu_temperature
+          // data.gpu_id,
+          // data.timestamp,
+          // data.gpu_memory_uses,
+          // data.gpu_memory_all,
+          // data.gpu_utilazations,
+          // data.gpu_temperature
+          data
         );
       });
   }
