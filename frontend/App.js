@@ -33,12 +33,12 @@ class App extends React.Component {
       font_color: "#caf0f8",
       ip_datas: [],
       ip_title: "127.0.0.1",
-      gpu_id: 0,
+      gpu_id: [],
       timestamp: "2021/06/29",
-      gpu_memory_uses: 0,
-      gpu_memory_all: 0,
-      gpu_utilazations: 0,
-      gpu_temperature: 0,
+      gpu_memory_uses: [],
+      gpu_memory_all: [],
+      gpu_utilazations: [],
+      gpu_temperature: [],
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
@@ -127,6 +127,12 @@ class App extends React.Component {
   ipHover(event) {
     let query_ip = event.currentTarget.innerHTML;
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
+    let gpu_id = [];
+    let timestamp = [];
+    let gpu_memory_uses = [];
+    let gpu_memory_all = [];
+    let gpu_utilazations = [];
+    let gpu_temperature = [];
     axios
       .get(url)
       .then((response) => response.data)
@@ -139,14 +145,21 @@ class App extends React.Component {
           gpu_utilazations: data.gpu_utilazations,
           gpu_temperature: data.gpu_temperature,
         });
+        data.forEach(function (item) {
+          gpu_id.push(item.gpu_id);
+          timestamp.push(item.timestamp);
+          gpu_memory_uses.push(item.gpu_memory_use);
+          gpu_memory_all.push(item.gpu_memory_all);
+          gpu_utilazations.push(item.gpu_utilazations);
+          gpu_temperature.push(item.gpu_temperature);
+        });
         console.log(
-          // data.gpu_id,
-          // data.timestamp,
-          // data.gpu_memory_uses,
-          // data.gpu_memory_all,
-          // data.gpu_utilazations,
-          // data.gpu_temperature
-          data
+          gpu_id,
+          timestamp,
+          gpu_memory_uses,
+          gpu_memory_all,
+          gpu_utilazations,
+          gpu_temperature
         );
       });
   }
