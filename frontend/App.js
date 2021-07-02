@@ -43,11 +43,12 @@ class App extends React.Component {
       timestamp: "2021/06/29",
     };
     this.fanClick = this.fanClick.bind(this);
+    this.fanHover = this.fanHover.bind(this);
     this.zhengClick = this.zhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
   }
 
-  fanClick() {
+  fanHover() {
     let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
     axios
       .get(url)
@@ -56,6 +57,8 @@ class App extends React.Component {
         this.setState({ ip_datas: data });
         console.log(data);
       });
+  }
+  fanClick() {
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#fan").show();
@@ -180,6 +183,7 @@ class App extends React.Component {
           <div
             id="fan_ori"
             className="family fan_family"
+            onmouseover={this.fanHover}
             onClick={this.fanClick}
           >
             范家
