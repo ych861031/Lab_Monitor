@@ -59,7 +59,7 @@ class App extends React.Component {
       });
   }
   fanClick() {
-    this.fanHover;
+    this.fanHover();
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#fan").show();
