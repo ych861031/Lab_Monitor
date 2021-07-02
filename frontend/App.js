@@ -16,7 +16,7 @@ function Ip_list(props) {
         style={{ color: props.font_color }}
         onClick={props.onClick}
       >
-        {data}
+        {data.ip}
       </div>
       <div
         className="ip_line"
@@ -30,6 +30,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       font_color: "#caf0f8",
+      ip_datas,
       gpu_utilazations: 0,
       gpu_memory_uses: 0,
       gpu_temperature: 0,
@@ -81,7 +82,7 @@ class App extends React.Component {
       .get(url)
       .then((response) => response.data)
       .then((data) => {
-        // this.setState({ datas: data });
+        this.setState({ ip_datas: data });
         console.log(data);
       });
   }
@@ -166,13 +167,13 @@ class App extends React.Component {
     }
   }
   render() {
-    let data = [
-      "127.115.51.89",
-      "127.115.51.90",
-      "127.115.51.91",
-      "127.115.51.92",
-    ];
-    let server_count = data.length;
+    // let data = [
+    //   "127.115.51.89",
+    //   "127.115.51.90",
+    //   "127.115.51.91",
+    //   "127.115.51.92",
+    // ];
+    let server_count = this.state.ip_datas.length;
     return (
       <div>
         <div>
@@ -207,7 +208,7 @@ class App extends React.Component {
         </div>
         <div className="ip_list" style={{ display: "none" }}>
           <Ip_list
-            ip_datas={data}
+            ip_datas={this.state.ip_datas}
             font_color={this.state.font_color}
             onClick={this.ipClick}
           ></Ip_list>
