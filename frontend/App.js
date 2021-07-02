@@ -48,6 +48,14 @@ class App extends React.Component {
   }
 
   fanClick() {
+    let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
+    axios
+      .get(url)
+      .then((response) => response.data)
+      .then((data) => {
+        this.setState({ ip_datas: data });
+        console.log(data);
+      });
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#fan").show();
@@ -76,14 +84,6 @@ class App extends React.Component {
         delay: function (el, i, l) {
           return i * 80;
         },
-      });
-    let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
-    axios
-      .get(url)
-      .then((response) => response.data)
-      .then((data) => {
-        this.setState({ ip_datas: data });
-        console.log(data);
       });
   }
   zhengClick() {
