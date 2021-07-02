@@ -183,11 +183,8 @@ class App extends React.Component {
           <div
             id="fan_ori"
             className="family fan_family"
-            // onMouseOver={this.fanHover}
-            onClick={() => {
-              this.fanHover();
-              this.fanClick();
-            }}
+            onMouseOver={this.fanHover}
+            onClick={this.fanClick}
           >
             范家
           </div>
