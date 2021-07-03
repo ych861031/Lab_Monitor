@@ -37,7 +37,7 @@ class App extends React.Component {
       timestamp: "2021/06/29",
       gpu_memory_uses: [],
       gpu_memory_all: [],
-      gpu_utilazations: [],
+      gpu_utilizations: [],
       gpu_temperature: [],
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
@@ -131,7 +131,7 @@ class App extends React.Component {
     let timestamp = [];
     let gpu_memory_uses = [];
     let gpu_memory_all = [];
-    let gpu_utilazations = [];
+    let gpu_utilizations = [];
     let gpu_temperature = [];
     axios
       .get(url)
@@ -142,7 +142,7 @@ class App extends React.Component {
           timestamp: data.timestamp,
           gpu_memory_uses: data.gpu_memory_uses,
           gpu_memory_all: data.gpu_memory_all,
-          gpu_utilazations: data.gpu_utilazations,
+          gpu_utilizations: data.gpu_utilizations,
           gpu_temperature: data.gpu_temperature,
         });
         data.forEach(function (item) {
@@ -150,7 +150,7 @@ class App extends React.Component {
           timestamp.push(item.timestamp);
           gpu_memory_uses.push(item.gpu_memory_use);
           gpu_memory_all.push(item.gpu_memory_all);
-          gpu_utilazations.push(item.gpu_utilazations);
+          gpu_utilizations.push(item.gpu_utilizations);
           gpu_temperature.push(item.gpu_temperature);
         });
         console.log(
@@ -158,7 +158,7 @@ class App extends React.Component {
           timestamp,
           gpu_memory_uses,
           gpu_memory_all,
-          gpu_utilazations,
+          gpu_utilizations,
           gpu_temperature
         );
       });
@@ -174,7 +174,7 @@ class App extends React.Component {
     anime
       .timeline()
       .add({
-        targets: [".gpu_utilazations", ".gpu_memory_uses", ".gpu_temperature"],
+        targets: [".gpu_utilizations", ".gpu_memory_uses", ".gpu_temperature"],
         scale: [0, 1],
         easing: "easeInOutQuad",
         duration: 500,
@@ -185,19 +185,19 @@ class App extends React.Component {
         easing: "easeInOutQuad",
         offset: "-=250",
       });
-    const gpu_utilazations = 20;
+    const gpu_utilizations = 20;
     const gpu_memory_uses = 50;
     const gpu_temperature = 90;
     this.setState({
-      gpu_utilazations: gpu_utilazations,
+      gpu_utilizations: gpu_utilizations,
       gpu_memory_uses: gpu_memory_uses,
       gpu_temperature: gpu_temperature,
       ip_title: event.currentTarget.innerHTML,
       //gpu_id,user_name,timestamp
     });
-    if (gpu_utilazations >= 40 && gpu_utilazations <= 80) {
+    if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
       this.setState({ utilazations_color: "#FFF3B0" });
-    } else if (gpu_utilazations > 80) {
+    } else if (gpu_utilizations > 80) {
       this.setState({ utilazations_color: "#FF758F" });
     }
     if (gpu_memory_uses >= 40 && gpu_memory_uses <= 80) {
@@ -283,12 +283,12 @@ class App extends React.Component {
           資料更新時間:&emsp;{this.state.timestamp}
         </div>
         <div
-          className="GPU_info gpu_utilazations"
+          className="GPU_info gpu_utilizations"
           style={{ color: this.state.font_color, display: "none" }}
         >
           <AnimatedProgressProvider
             valueStart={0}
-            valueEnd={this.state.gpu_utilazations}
+            valueEnd={this.state.gpu_utilizations}
             duration={1.4}
             easingFunction={easeQuadInOut}
           >
