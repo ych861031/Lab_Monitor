@@ -152,12 +152,9 @@ class App extends React.Component {
           gpu_temperature_list.push(item.gpu_temperature);
         });
         console.log(
-          gpu_id_list,
-          timestamp_list,
-          gpu_memory_uses_list,
-          gpu_memory_all_list,
-          gpu_utilizations_list,
-          gpu_temperature_list
+          gpu_memory_uses_list[0]*100/gpu_memory_all_list[0],
+          gpu_utilizations_list[0],
+          gpu_temperature_list[0],
         );
         this.setState({
           ip_title: query_ip,
