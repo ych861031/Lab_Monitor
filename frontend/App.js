@@ -155,7 +155,9 @@ class App extends React.Component {
           Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
           gpu_utilizations_list[0],
           gpu_temperature_list[0],
-          typeof Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
+          typeof Math.round(
+            (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
+          ),
           typeof gpu_utilizations_list[0],
           typeof gpu_temperature_list[0]
         );
@@ -163,7 +165,9 @@ class App extends React.Component {
           ip_title: query_ip,
           gpu_id: gpu_id_list[0],
           timestamp: timestamp_list[0],
-          gpu_memory_uses: Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
+          gpu_memory_uses: Math.round(
+            (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
+          ),
           gpu_memory_all: gpu_memory_all_list[0],
           gpu_utilizations: gpu_utilizations_list[0],
           gpu_temperature: gpu_temperature_list[0],
@@ -205,6 +209,7 @@ class App extends React.Component {
     const gpu_utilizations = this.state.gpu_utilizations;
     const gpu_memory_uses = this.state.gpu_memory_uses;
     const gpu_temperature = this.state.gpu_temperature;
+    console.log(gpu_utilizations, gpu_memory_uses, gpu_temperature);
     if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
       this.setState({ utilazations_color: "#FFF3B0" });
     } else if (gpu_utilizations > 80) {
