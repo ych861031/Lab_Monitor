@@ -196,19 +196,17 @@ class App extends React.Component {
         easing: "easeInOutQuad",
         offset: "-=250",
       });
-    // const gpu_utilizations = 20;
-    // const gpu_memory_uses = 50;
-    // const gpu_temperature = 90;
-    // this.setState({
-    //   gpu_utilizations: gpu_utilizations,
-    //   gpu_memory_uses: gpu_memory_uses,
-    //   gpu_temperature: gpu_temperature,
-    //   ip_title: event.currentTarget.innerHTML,
-    //   //gpu_id,user_name,timestamp
-    // });
-    const gpu_utilizations = this.state.gpu_utilizations;
-    const gpu_memory_uses = this.state.gpu_memory_uses;
-    const gpu_temperature = this.state.gpu_temperature;
+    const gpu_utilizations = 20;
+    const gpu_memory_uses = 50;
+    const gpu_temperature = 90;
+    this.setState({
+      gpu_utilizations: gpu_utilizations,
+      gpu_memory_uses: gpu_memory_uses,
+      gpu_temperature: gpu_temperature,
+    });
+    // const gpu_utilizations = this.state.gpu_utilizations;
+    // const gpu_memory_uses = this.state.gpu_memory_uses;
+    // const gpu_temperature = this.state.gpu_temperature;
     console.log(gpu_utilizations, gpu_memory_uses, gpu_temperature);
     if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
       this.setState({ utilazations_color: "#FFF3B0" });
