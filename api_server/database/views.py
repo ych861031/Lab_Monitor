@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view
 from .db import ConnectDB
 import numpy as np
 import json
+import pytz
+tw = pytz.timezone('Asia/Taipei')
 
 
 class DatabaseViewSet(viewsets.ModelViewSet):
@@ -38,6 +40,10 @@ class DatabaseViewSet(viewsets.ModelViewSet):
         df = DB.getDFReponse(sql)
 
         df = df[:len(np.unique(df["gpu_id"]))]
+
+        df["timestamp"] = df["timestamp"].apply(
+            lambda x: x.timestamp() - 8 * 3600)
+
         result = json.loads(df.to_json(orient="records"))
 
         return JsonResponse(result, status=status.HTTP_200_OK, safe=False)
