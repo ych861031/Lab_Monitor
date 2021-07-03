@@ -152,10 +152,10 @@ class App extends React.Component {
           gpu_temperature_list.push(item.gpu_temperature);
         });
         console.log(
-          gpu_memory_uses_list[0] / gpu_memory_all_list[0],
+          Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
           gpu_utilizations_list[0],
           gpu_temperature_list[0],
-          typeof gpu_memory_uses_list[0] / gpu_memory_all_list[0],
+          typeof Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
           typeof gpu_utilizations_list[0],
           typeof gpu_temperature_list[0]
         );
@@ -163,7 +163,7 @@ class App extends React.Component {
           ip_title: query_ip,
           gpu_id: gpu_id_list[0],
           timestamp: timestamp_list[0],
-          gpu_memory_uses: gpu_memory_uses_list[0] / gpu_memory_all_list[0],
+          gpu_memory_uses: Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
           gpu_memory_all: gpu_memory_all_list[0],
           gpu_utilizations: gpu_utilizations_list[0],
           gpu_temperature: gpu_temperature_list[0],
