@@ -158,12 +158,12 @@ class App extends React.Component {
         });
         const gpu_utilizations = gpu_utilizations_list[0];
         const gpu_memory_uses = Math.round(
-          gpu_memory_uses_list[0] / gpu_memory_all_list[0]
+          (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
         );
         const gpu_temperature = gpu_temperature_list[0];
-        console.log(gpu_utilizations)
-        console.log(gpu_memory_uses)
-        console.log(gpu_temperature)
+        console.log(gpu_utilizations);
+        console.log(gpu_memory_uses);
+        console.log(gpu_temperature);
         if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
           this.setState({ utilazations_color: "#FFF3B0" });
         } else if (gpu_utilizations > 80) {
