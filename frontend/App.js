@@ -33,12 +33,18 @@ class App extends React.Component {
       font_color: "#caf0f8",
       ip_datas: [],
       ip_title: "127.0.0.1",
-      gpu_id: [],
+      gpu_id_list: [],
+      timestamp_list: "2021/06/29",
+      gpu_memory_uses_list: [],
+      gpu_memory_all_list: [],
+      gpu_utilizations_list: [],
+      gpu_temperature_list: [],
+      gpu_id: 0,
       timestamp: "2021/06/29",
-      gpu_memory_uses: [],
-      gpu_memory_all: [],
-      gpu_utilizations: [],
-      gpu_temperature: [],
+      gpu_memory_uses: 0,
+      gpu_memory_all: 0,
+      gpu_utilizations: 0,
+      gpu_temperature: 0,
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
@@ -127,40 +133,41 @@ class App extends React.Component {
   ipHover(event) {
     let query_ip = event.currentTarget.innerHTML;
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
-    let gpu_id = [];
-    let timestamp = [];
-    let gpu_memory_uses = [];
-    let gpu_memory_all = [];
-    let gpu_utilizations = [];
-    let gpu_temperature = [];
+    let gpu_id_list = [];
+    let timestamp_list = [];
+    let gpu_memory_uses_list = [];
+    let gpu_memory_all_list = [];
+    let gpu_utilizations_list = [];
+    let gpu_temperature_list = [];
     axios
       .get(url)
       .then((response) => response.data)
       .then((data) => {
-        this.setState({
-          gpu_id: data.gpu_id,
-          timestamp: data.timestamp,
-          gpu_memory_uses: data.gpu_memory_uses,
-          gpu_memory_all: data.gpu_memory_all,
-          gpu_utilizations: data.gpu_utilizations,
-          gpu_temperature: data.gpu_temperature,
-        });
         data.forEach(function (item) {
-          gpu_id.push(item.gpu_id);
-          timestamp.push(item.timestamp);
-          gpu_memory_uses.push(item.gpu_memory_use);
-          gpu_memory_all.push(item.gpu_memory_all);
-          gpu_utilizations.push(item.gpu_utilizations);
-          gpu_temperature.push(item.gpu_temperature);
+          gpu_id_list.push(item.gpu_id);
+          timestamp_list.push(item.timestamp);
+          gpu_memory_uses_list.push(item.gpu_memory_use);
+          gpu_memory_all_list.push(item.gpu_memory_all);
+          gpu_utilizations_list.push(item.gpu_utilizations);
+          gpu_temperature_list.push(item.gpu_temperature);
         });
         console.log(
-          gpu_id,
-          timestamp,
-          gpu_memory_uses,
-          gpu_memory_all,
-          gpu_utilizations,
-          gpu_temperature
+          gpu_id_list,
+          timestamp_list,
+          gpu_memory_uses_list,
+          gpu_memory_all_list,
+          gpu_utilizations_list,
+          gpu_temperature_list
         );
+        this.setState({
+          ip_title: query_ip,
+          gpu_id: gpu_id_list[0],
+          timestamp: timestamp_list[0],
+          gpu_memory_uses: gpu_memory_uses_list[0]*100/gpu_memory_all_list[0],
+          gpu_memory_all: gpu_memory_all_list[0],
+          gpu_utilizations: gpu_utilizations_list[0],
+          gpu_temperature: gpu_temperature_list[0],
+        });
       });
   }
   ipClick(event) {
@@ -185,16 +192,19 @@ class App extends React.Component {
         easing: "easeInOutQuad",
         offset: "-=250",
       });
-    const gpu_utilizations = 20;
-    const gpu_memory_uses = 50;
-    const gpu_temperature = 90;
-    this.setState({
-      gpu_utilizations: gpu_utilizations,
-      gpu_memory_uses: gpu_memory_uses,
-      gpu_temperature: gpu_temperature,
-      ip_title: event.currentTarget.innerHTML,
-      //gpu_id,user_name,timestamp
-    });
+    // const gpu_utilizations = 20;
+    // const gpu_memory_uses = 50;
+    // const gpu_temperature = 90;
+    // this.setState({
+    //   gpu_utilizations: gpu_utilizations,
+    //   gpu_memory_uses: gpu_memory_uses,
+    //   gpu_temperature: gpu_temperature,
+    //   ip_title: event.currentTarget.innerHTML,
+    //   //gpu_id,user_name,timestamp
+    // });
+    const gpu_utilizations = this.state.gpu_utilizations;
+    const gpu_memory_uses = this.state.gpu_memory_uses;
+    const gpu_temperature = this.state.gpu_temperature;
     if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
       this.setState({ utilazations_color: "#FFF3B0" });
     } else if (gpu_utilizations > 80) {
