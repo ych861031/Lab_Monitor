@@ -249,7 +249,7 @@ class App extends React.Component {
     const gpu_utilizations = this.state.gpu_utilizations;
     const gpu_memory_uses = this.state.gpu_memory_uses;
     const gpu_temperature = this.state.gpu_temperature;
-    console.log(gpu_utilizations, gpu_memory_uses, gpu_temperature);
+    console.log("test====",gpu_utilizations, gpu_memory_uses, gpu_temperature);
     if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
       this.setState({ utilazations_color: "#FFF3B0" });
     } else if (gpu_utilizations > 80) {
