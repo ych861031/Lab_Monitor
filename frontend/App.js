@@ -179,7 +179,8 @@ class App extends React.Component {
         } else if (gpu_temperature > 80) {
           this.setState({ temperature_color: "#FF758F" });
         }
-        let timestamp = new Date(timestamp_list[0]*1000);
+        let timestamp = new Date(timestamp_list[0] * 1000);
+        console.log(timestamp);
         timestamp =
           timestamp.getFullYear() +
           "/" +
