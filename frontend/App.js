@@ -14,7 +14,6 @@ function Ip_list(props) {
       <div
         className="ip"
         style={{ color: props.font_color }}
-        onMouseOver={props.onMouseOver}
         onClick={props.onClick}
       >
         {data.ip}
@@ -54,7 +53,6 @@ class App extends React.Component {
     this.fanHover = this.fanHover.bind(this);
     this.zhengClick = this.zhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
-    this.ipHover = this.ipHover.bind(this);
   }
 
   fanHover() {
@@ -130,50 +128,6 @@ class App extends React.Component {
         },
       });
   }
-  ipHover(event) {
-    // let query_ip = event.currentTarget.innerHTML;
-    // let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
-    // let gpu_id_list = [];
-    // let timestamp_list = [];
-    // let gpu_memory_uses_list = [];
-    // let gpu_memory_all_list = [];
-    // let gpu_utilizations_list = [];
-    // let gpu_temperature_list = [];
-    // axios
-    //   .get(url)
-    //   .then((response) => response.data)
-    //   .then((data) => {
-    //     data.forEach(function (item) {
-    //       gpu_id_list.push(item.gpu_id);
-    //       timestamp_list.push(item.timestamp);
-    //       gpu_memory_uses_list.push(item.gpu_memory_use);
-    //       gpu_memory_all_list.push(item.gpu_memory_all);
-    //       gpu_utilizations_list.push(item.gpu_utilizations);
-    //       gpu_temperature_list.push(item.gpu_temperature);
-    //     });
-    //     console.log(
-    //       Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
-    //       gpu_utilizations_list[0],
-    //       gpu_temperature_list[0],
-    //       typeof Math.round(
-    //         (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
-    //       ),
-    //       typeof gpu_utilizations_list[0],
-    //       typeof gpu_temperature_list[0]
-    //     );
-    //     this.setState({
-    //       ip_title: query_ip,
-    //       gpu_id: gpu_id_list[0],
-    //       timestamp: timestamp_list[0],
-    //       gpu_memory_uses: Math.round(
-    //         (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
-    //       ),
-    //       gpu_memory_all: gpu_memory_all_list[0],
-    //       gpu_utilizations: gpu_utilizations_list[0],
-    //       gpu_temperature: gpu_temperature_list[0],
-    //     });
-    //   });
-  }
   ipClick(event) {
     $("#fan").hide();
     $("#zheng").hide();
@@ -202,27 +156,11 @@ class App extends React.Component {
           gpu_utilizations_list.push(item.gpu_utilizations);
           gpu_temperature_list.push(item.gpu_temperature);
         });
-        console.log(
-          Math.round(gpu_memory_uses_list[0] / gpu_memory_all_list[0]),
-          gpu_utilizations_list[0],
-          gpu_temperature_list[0],
-          typeof Math.round(
-            (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
-          ),
-          typeof gpu_utilizations_list[0],
-          typeof gpu_temperature_list[0]
-        );
         const gpu_utilizations = Math.round(
           gpu_memory_uses_list[0] / gpu_memory_all_list[0]
         );
         const gpu_memory_uses = gpu_utilizations_list[0];
         const gpu_temperature = gpu_temperature_list[0];
-        console.log(
-          "test====",
-          gpu_utilizations,
-          gpu_memory_uses,
-          gpu_temperature
-        );
         if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
           this.setState({ utilazations_color: "#FFF3B0" });
         } else if (gpu_utilizations > 80) {
@@ -238,10 +176,30 @@ class App extends React.Component {
         } else if (gpu_temperature > 80) {
           this.setState({ temperature_color: "#FF758F" });
         }
+        let timestamp = new Date(timestamp_list[0]);
+        timestamp =
+          timestamp.getFullYear() +
+          "/" +
+          (timestamp.getMonth() + 1) +
+          "/" +
+          timestamp.getDate() +
+          " " +
+          timestamp.getHours() +
+          ":" +
+          timestamp.getMinutes() +
+          ":" +
+          timestamp.getSeconds();
         this.setState({
+          gpu_id_list: gpu_id_list,
+          timestamp_list: timestamp_list,
+          gpu_memory_uses_list: gpu_memory_uses_list,
+          gpu_memory_all_list: gpu_memory_all_list,
+          gpu_utilizations_list: gpu_utilizations_list,
+          gpu_temperature_list: gpu_temperature_list,
+
           ip_title: query_ip,
           gpu_id: gpu_id_list[0],
-          timestamp: timestamp_list[0],
+          timestamp: timestamp,
           gpu_memory_uses: Math.round(
             (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
           ),
@@ -264,41 +222,8 @@ class App extends React.Component {
         easing: "easeInOutQuad",
         offset: "-=250",
       });
-    // const gpu_utilizations = 20;
-    // const gpu_memory_uses = 50;
-    // const gpu_temperature = 90;
-    // this.setState({
-    //   gpu_utilizations: gpu_utilizations,
-    //   gpu_memory_uses: gpu_memory_uses,
-    //   gpu_temperature: gpu_temperature,
-    // });
-    // const gpu_utilizations = this.state.gpu_utilizations;
-    // const gpu_memory_uses = this.state.gpu_memory_uses;
-    // const gpu_temperature = this.state.gpu_temperature;
-    // console.log("test====",gpu_utilizations, gpu_memory_uses, gpu_temperature);
-    // if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
-    //   this.setState({ utilazations_color: "#FFF3B0" });
-    // } else if (gpu_utilizations > 80) {
-    //   this.setState({ utilazations_color: "#FF758F" });
-    // }
-    // if (gpu_memory_uses >= 40 && gpu_memory_uses <= 80) {
-    //   this.setState({ memoryuses_color: "#FFF3B0" });
-    // } else if (gpu_memory_uses > 80) {
-    //   this.setState({ memoryuses_color: "#FF758F" });
-    // }
-    // if (gpu_temperature >= 40 && gpu_temperature <= 80) {
-    //   this.setState({ temperature_color: "#FFF3B0" });
-    // } else if (gpu_temperature > 80) {
-    //   this.setState({ temperature_color: "#FF758F" });
-    // }
   }
   render() {
-    // let data = [
-    //   "127.115.51.89",
-    //   "127.115.51.90",
-    //   "127.115.51.91",
-    //   "127.115.51.92",
-    // ];
     let server_count = this.state.ip_datas.length;
     return (
       <div>
@@ -337,7 +262,6 @@ class App extends React.Component {
           <Ip_list
             ip_datas={this.state.ip_datas}
             font_color={this.state.font_color}
-            onMouseOver={this.ipHover}
             onClick={this.ipClick}
           ></Ip_list>
         </div>
