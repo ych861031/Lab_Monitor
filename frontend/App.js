@@ -212,6 +212,32 @@ class App extends React.Component {
           typeof gpu_utilizations_list[0],
           typeof gpu_temperature_list[0]
         );
+        const gpu_utilizations = Math.round(
+          gpu_memory_uses_list[0] / gpu_memory_all_list[0]
+        );
+        const gpu_memory_uses = gpu_utilizations_list[0];
+        const gpu_temperature = gpu_temperature_list[0];
+        console.log(
+          "test====",
+          gpu_utilizations,
+          gpu_memory_uses,
+          gpu_temperature
+        );
+        if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
+          this.setState({ utilazations_color: "#FFF3B0" });
+        } else if (gpu_utilizations > 80) {
+          this.setState({ utilazations_color: "#FF758F" });
+        }
+        if (gpu_memory_uses >= 40 && gpu_memory_uses <= 80) {
+          this.setState({ memoryuses_color: "#FFF3B0" });
+        } else if (gpu_memory_uses > 80) {
+          this.setState({ memoryuses_color: "#FF758F" });
+        }
+        if (gpu_temperature >= 40 && gpu_temperature <= 80) {
+          this.setState({ temperature_color: "#FFF3B0" });
+        } else if (gpu_temperature > 80) {
+          this.setState({ temperature_color: "#FF758F" });
+        }
         this.setState({
           ip_title: query_ip,
           gpu_id: gpu_id_list[0],
@@ -246,25 +272,25 @@ class App extends React.Component {
     //   gpu_memory_uses: gpu_memory_uses,
     //   gpu_temperature: gpu_temperature,
     // });
-    const gpu_utilizations = this.state.gpu_utilizations;
-    const gpu_memory_uses = this.state.gpu_memory_uses;
-    const gpu_temperature = this.state.gpu_temperature;
-    console.log("test====",gpu_utilizations, gpu_memory_uses, gpu_temperature);
-    if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
-      this.setState({ utilazations_color: "#FFF3B0" });
-    } else if (gpu_utilizations > 80) {
-      this.setState({ utilazations_color: "#FF758F" });
-    }
-    if (gpu_memory_uses >= 40 && gpu_memory_uses <= 80) {
-      this.setState({ memoryuses_color: "#FFF3B0" });
-    } else if (gpu_memory_uses > 80) {
-      this.setState({ memoryuses_color: "#FF758F" });
-    }
-    if (gpu_temperature >= 40 && gpu_temperature <= 80) {
-      this.setState({ temperature_color: "#FFF3B0" });
-    } else if (gpu_temperature > 80) {
-      this.setState({ temperature_color: "#FF758F" });
-    }
+    // const gpu_utilizations = this.state.gpu_utilizations;
+    // const gpu_memory_uses = this.state.gpu_memory_uses;
+    // const gpu_temperature = this.state.gpu_temperature;
+    // console.log("test====",gpu_utilizations, gpu_memory_uses, gpu_temperature);
+    // if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
+    //   this.setState({ utilazations_color: "#FFF3B0" });
+    // } else if (gpu_utilizations > 80) {
+    //   this.setState({ utilazations_color: "#FF758F" });
+    // }
+    // if (gpu_memory_uses >= 40 && gpu_memory_uses <= 80) {
+    //   this.setState({ memoryuses_color: "#FFF3B0" });
+    // } else if (gpu_memory_uses > 80) {
+    //   this.setState({ memoryuses_color: "#FF758F" });
+    // }
+    // if (gpu_temperature >= 40 && gpu_temperature <= 80) {
+    //   this.setState({ temperature_color: "#FFF3B0" });
+    // } else if (gpu_temperature > 80) {
+    //   this.setState({ temperature_color: "#FF758F" });
+    // }
   }
   render() {
     // let data = [
