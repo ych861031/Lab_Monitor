@@ -42,7 +42,7 @@ class DatabaseViewSet(viewsets.ModelViewSet):
         df = df[:len(np.unique(df["gpu_id"]))]
 
         df["timestamp"] = df["timestamp"].apply(
-            lambda x: x.timestamp() - 8 * 3600)
+            lambda x: int(x.timestamp() - 8 * 3600))
 
         result = json.loads(df.to_json(orient="records"))
 
