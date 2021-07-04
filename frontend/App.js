@@ -65,6 +65,7 @@ class App extends React.Component {
     this.arrowzhengOut = this.arrowzhengOut.bind(this);
     this.arrowzhengClick = this.arrowzhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
+    this.axios_getdata = this.axios_getdata.bind(this);
   }
 
   fanHover() {
@@ -299,16 +300,7 @@ class App extends React.Component {
         });
     }
   }
-  ipClick(event) {
-    this.setState({ current_page: "GPU_info" });
-    $("#fan").hide();
-    $("#zheng").hide();
-    $(".ip_list").hide();
-    $(".server_count").hide();
-    $(".GPU_info").show();
-    $(".ip_title").show();
-    $(".data_info").show();
-    let query_ip = event.currentTarget.innerHTML;
+  axios_getdata(query_ip) {
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
     let gpu_id_list = [];
     let timestamp_list = [];
@@ -398,6 +390,18 @@ class App extends React.Component {
           });
         }
       });
+  }
+  ipClick(event) {
+    this.setState({ current_page: "GPU_info" });
+    $("#fan").hide();
+    $("#zheng").hide();
+    $(".ip_list").hide();
+    $(".server_count").hide();
+    $(".GPU_info").show();
+    $(".ip_title").show();
+    $(".data_info").show();
+    let query_ip = event.currentTarget.innerHTML;
+    setInterval(() => this.axios_getdata(query_ip), 3000);
     anime
       .timeline()
       .add({
