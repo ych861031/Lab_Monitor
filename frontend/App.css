@@ -64,6 +64,22 @@ body {
   margin-bottom: 40px;
   opacity: 0%;
 }
+.arrowfan {
+  position: absolute;
+  left: 3%;
+  top: 85%;
+  height: 50px;
+  width: 50px;
+  opacity: 0%;
+}
+.arrowzheng {
+  position: absolute;
+  left: 3%;
+  top: 85%;
+  height: 50px;
+  width: 50px;
+  opacity: 0%;
+}
 /*GPU_info*/
 .ip_title {
   position: absolute;

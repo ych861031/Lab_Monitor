@@ -25,6 +25,11 @@ function Ip_list(props) {
     </div>
   ));
 }
+
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -48,10 +53,17 @@ class App extends React.Component {
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
       user_name: "楊仲軒",
+      current_page: "home",
     };
     this.fanClick = this.fanClick.bind(this);
     this.fanHover = this.fanHover.bind(this);
+    this.arrowfanHover = this.arrowfanHover.bind(this);
+    this.arrowfanOut = this.arrowfanOut.bind(this);
+    this.arrowfanClick = this.arrowfanClick.bind(this);
     this.zhengClick = this.zhengClick.bind(this);
+    this.arrowzhengHover = this.arrowzhengHover.bind(this);
+    this.arrowzhengOut = this.arrowzhengOut.bind(this);
+    this.arrowzhengClick = this.arrowzhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
   }
 
@@ -66,11 +78,13 @@ class App extends React.Component {
       });
   }
   fanClick() {
+    this.setState({ font_color: "#CAF0F8", current_page: "server_info" });
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#fan").show();
     $(".ip_list").show();
     $(".server_count").show();
+    $(".arrowfan").show();
     anime
       .timeline()
       .add({
@@ -94,15 +108,23 @@ class App extends React.Component {
         delay: function (el, i, l) {
           return i * 80;
         },
+        duration: 300,
+      })
+      .add({
+        targets: [".arrowfan"],
+        opacity: [0, 0.4],
+        easing: "easeInOutQuad",
+        offset: "-=100",
       });
   }
   zhengClick() {
-    this.setState({ font_color: "#fec8ff" });
+    this.setState({ font_color: "#fec8ff", current_page: "server_info" });
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
     $("#zheng").show();
     $(".ip_list").show();
     $(".server_count").show();
+    $(".arrowzheng").show();
     anime
       .timeline()
       .add({
@@ -126,9 +148,159 @@ class App extends React.Component {
         delay: function (el, i, l) {
           return i * 80;
         },
+        duration: 300,
+      })
+      .add({
+        targets: [".arrowzheng"],
+        opacity: [0, 0.4],
+        easing: "easeInOutQuad",
+        offset: "-=100",
       });
   }
+  arrowfanHover() {
+    anime.timeline().add({
+      targets: ".arrowfan",
+      scale: [1, 1.2],
+      opacity: [0.4, 1],
+      easing: "easeInOutQuad",
+      duration: 100,
+    });
+  }
+  arrowfanOut() {
+    anime.timeline().add({
+      targets: ".arrowfan",
+      scale: [1.2, 1],
+      opacity: [1, 0.4],
+      easing: "easeInOutQuad",
+      duration: 100,
+    });
+  }
+  arrowfanClick() {
+    if (this.state.current_page == "server_info") {
+      $(".ip_list").hide();
+      $(".server_count").hide();
+      $(".arrowfan").hide();
+      $("#zheng_ori").show();
+      anime
+        .timeline()
+        .add({
+          targets: "#fan",
+          scale: [0.7, 1],
+          easing: "easeInOutQuad",
+          left: ["3%", "30%"],
+          top: ["5%", "45%"],
+          duration: 600,
+        })
+        .add({
+          targets: [".arrowfan"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=500",
+        });
+      sleep(600).then(() => {
+        $("#fan_ori").show();
+        $("#fan").hide();
+      });
+    } else if (this.state.current_page == "GPU_info") {
+      this.setState({ current_page: "server_info" });
+      $("#fan").show();
+      $(".ip_list").show();
+      $(".server_count").show();
+      $(".GPU_info").hide();
+      $(".ip_title").hide();
+      $(".data_info").hide();
+      anime
+        .timeline()
+        .add({
+          targets: [".server_count", ".ip", ".ip_line"],
+          opacity: [0, 1],
+          easing: "easeInOutQuad",
+          delay: function (el, i, l) {
+            return i * 80;
+          },
+          duration: 300,
+        })
+        .add({
+          targets: [".ip_title", ".data_info"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=300",
+        });
+    }
+  }
+  arrowzhengHover() {
+    anime.timeline().add({
+      targets: ".arrowzheng",
+      scale: [1, 1.2],
+      opacity: [0.4, 1],
+      easing: "easeInOutQuad",
+      duration: 100,
+    });
+  }
+  arrowzhengOut() {
+    anime.timeline().add({
+      targets: ".arrowzheng",
+      scale: [1.2, 1],
+      opacity: [1, 0.4],
+      easing: "easeInOutQuad",
+      duration: 100,
+    });
+  }
+  arrowzhengClick() {
+    if (this.state.current_page == "server_info") {
+      $(".ip_list").hide();
+      $(".server_count").hide();
+      $(".arrowzheng").hide();
+      $("#fan_ori").show();
+      anime
+        .timeline()
+        .add({
+          targets: "#zheng",
+          scale: [0.7, 1],
+          easing: "easeInOutQuad",
+          left: ["3%", "55%"],
+          top: ["5%", "45%"],
+          duration: 600,
+        })
+        .add({
+          targets: [".arrowzheng"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=500",
+        });
+      sleep(600).then(() => {
+        $("#zheng_ori").show();
+        $("#zheng").hide();
+      });
+    } else if (this.state.current_page == "GPU_info") {
+      this.setState({ current_page: "server_info" });
+      $("#zheng").show();
+      $(".ip_list").show();
+      $(".server_count").show();
+      $(".GPU_info").hide();
+      $(".ip_title").hide();
+      $(".data_info").hide();
+      anime
+        .timeline()
+        .add({
+          targets: [".server_count", ".ip", ".ip_line"],
+          opacity: [0, 1],
+          easing: "easeInOutQuad",
+          delay: function (el, i, l) {
+            return i * 80;
+          },
+          duration: 300,
+        })
+        .add({
+          targets: [".ip_title", ".data_info"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=300",
+        });
+    }
+  }
   ipClick(event) {
+    this.setState({ current_page: "GPU_info" });
     $("#fan").hide();
     $("#zheng").hide();
     $(".ip_list").hide();
@@ -181,36 +353,50 @@ class App extends React.Component {
         }
         let timestamp = new Date(timestamp_list[0] * 1000);
         console.log(timestamp);
-        timestamp =
-          timestamp.getFullYear() +
-          "/" +
-          (timestamp.getMonth() + 1) +
-          "/" +
-          timestamp.getDate() +
-          " " +
-          timestamp.getHours() +
-          ":" +
-          timestamp.getMinutes() +
-          ":" +
-          timestamp.getSeconds();
-        this.setState({
-          gpu_id_list: gpu_id_list,
-          timestamp_list: timestamp_list,
-          gpu_memory_uses_list: gpu_memory_uses_list,
-          gpu_memory_all_list: gpu_memory_all_list,
-          gpu_utilizations_list: gpu_utilizations_list,
-          gpu_temperature_list: gpu_temperature_list,
+        let now = new Date();
+        now = now.getTime();
+        let time_difference = (now - timestamp_list[0] * 1000) / 60000;
+        if (isNaN(timestamp.getFullYear()) || time_difference >= 30) {
+          this.setState({
+            ip_title: query_ip,
+            gpu_id: "離線",
+            timestamp: "離線",
+            gpu_memory_uses: 0,
+            gpu_utilizations: 0,
+            gpu_temperature: 0,
+          });
+        } else {
+          timestamp =
+            timestamp.getFullYear() +
+            "/" +
+            (timestamp.getMonth() + 1) +
+            "/" +
+            timestamp.getDate() +
+            " " +
+            timestamp.getHours() +
+            ":" +
+            timestamp.getMinutes() +
+            ":" +
+            timestamp.getSeconds();
+          this.setState({
+            gpu_id_list: gpu_id_list,
+            timestamp_list: timestamp_list,
+            gpu_memory_uses_list: gpu_memory_uses_list,
+            gpu_memory_all_list: gpu_memory_all_list,
+            gpu_utilizations_list: gpu_utilizations_list,
+            gpu_temperature_list: gpu_temperature_list,
 
-          ip_title: query_ip,
-          gpu_id: gpu_id_list[0],
-          timestamp: timestamp,
-          gpu_memory_uses: Math.round(
-            (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
-          ),
-          gpu_memory_all: gpu_memory_all_list[0],
-          gpu_utilizations: gpu_utilizations_list[0],
-          gpu_temperature: gpu_temperature_list[0],
-        });
+            ip_title: query_ip,
+            gpu_id: gpu_id_list[0],
+            timestamp: timestamp,
+            gpu_memory_uses: Math.round(
+              (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
+            ),
+            gpu_memory_all: gpu_memory_all_list[0],
+            gpu_utilizations: gpu_utilizations_list[0],
+            gpu_temperature: gpu_temperature_list[0],
+          });
+        }
       });
     anime
       .timeline()
@@ -275,6 +461,22 @@ class App extends React.Component {
         >
           sever數量&emsp;{server_count}
         </div>
+        <img
+          src="./img/arrow1.png"
+          className="arrowfan"
+          onMouseOver={this.arrowfanHover}
+          onMouseOut={this.arrowfanOut}
+          onClick={this.arrowfanClick}
+          style={{ display: "none" }}
+        />
+        <img
+          src="./img/arrow2.png"
+          className="arrowzheng"
+          onMouseOver={this.arrowzhengHover}
+          onMouseOut={this.arrowzhengOut}
+          onClick={this.arrowzhengClick}
+          style={{ display: "none" }}
+        />
         <div
           className="ip_title"
           style={{ color: this.state.font_color, display: "none" }}
