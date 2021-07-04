@@ -203,6 +203,7 @@ class App extends React.Component {
         $("#fan").hide();
       });
     } else if (this.state.current_page == "GPU_info") {
+      clearInterval(this.getdata_Interval);
       this.setState({ current_page: "server_info" });
       $("#fan").show();
       $(".ip_list").show();
@@ -274,6 +275,7 @@ class App extends React.Component {
         $("#zheng").hide();
       });
     } else if (this.state.current_page == "GPU_info") {
+      clearInterval(this.getdata_Interval);
       this.setState({ current_page: "server_info" });
       $("#zheng").show();
       $(".ip_list").show();
@@ -401,7 +403,10 @@ class App extends React.Component {
     $(".ip_title").show();
     $(".data_info").show();
     let query_ip = event.currentTarget.innerHTML;
-    setInterval(() => this.axios_getdata(query_ip), 3000);
+    this.getdata_Interval = setInterval(
+      () => this.axios_getdata(query_ip),
+      3000
+    );
     anime
       .timeline()
       .add({
