@@ -79,6 +79,7 @@ class App extends React.Component {
       });
   }
   fanClick() {
+    let url = `http://140.115.51.115:9999/api/serverInfo/F/`;
     this.setState({ font_color: "#CAF0F8", current_page: "server_info" });
     $("#fan_ori").hide();
     $("#zheng_ori").hide();
@@ -86,36 +87,43 @@ class App extends React.Component {
     $(".ip_list").show();
     $(".server_count").show();
     $(".arrowfan").show();
-    anime
-      .timeline()
-      .add({
-        targets: "#fan",
-        scale: [1, 3],
-        easing: "easeInOutQuad",
-        duration: 600,
-      })
-      .add({
-        targets: "#fan",
-        scale: [3, 0.7],
-        easing: "easeInOutQuad",
-        left: ["30%", "3%"],
-        top: ["45%", "5%"],
-        duration: 250,
-      })
-      .add({
-        targets: [".server_count", ".ip", ".ip_line"],
-        opacity: [0, 1],
-        easing: "easeInOutQuad",
-        delay: function (el, i, l) {
-          return i * 80;
-        },
-        duration: 300,
-      })
-      .add({
-        targets: [".arrowfan"],
-        opacity: [0, 0.4],
-        easing: "easeInOutQuad",
-        offset: "-=100",
+    axios
+      .get(url)
+      .then((response) => response.data)
+      .then((data) => {
+        this.setState({ ip_datas: data });
+        console.log(data);
+        anime
+          .timeline()
+          .add({
+            targets: "#fan",
+            scale: [1, 3],
+            easing: "easeInOutQuad",
+            duration: 600,
+          })
+          .add({
+            targets: "#fan",
+            scale: [3, 0.7],
+            easing: "easeInOutQuad",
+            left: ["30%", "3%"],
+            top: ["45%", "5%"],
+            duration: 250,
+          })
+          .add({
+            targets: [".server_count", ".ip", ".ip_line"],
+            opacity: [0, 1],
+            easing: "easeInOutQuad",
+            delay: function (el, i, l) {
+              return i * 80;
+            },
+            duration: 300,
+          })
+          .add({
+            targets: [".arrowfan"],
+            opacity: [0, 0.4],
+            easing: "easeInOutQuad",
+            offset: "-=100",
+          });
       });
   }
   zhengClick() {
@@ -430,7 +438,6 @@ class App extends React.Component {
           <div
             id="fan_ori"
             className="family fan_family"
-            onMouseOver={this.fanHover}
             onClick={this.fanClick}
           >
             范家
