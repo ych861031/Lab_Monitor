@@ -95,6 +95,9 @@ body {
   font-size: 25px;
   opacity: 0%;
 }
+.gpu_id_list {
+  width: 200px;
+}
 .GPU_info {
   font-size: 28px;
   width: 250px;
@@ -106,15 +109,15 @@ body {
   bottom: 50px;
 }
 .gpu_utilizations {
-  left: 40%;
+  left: 50%;
   top: 20%;
 }
 .gpu_memory_uses {
-  left: 25%;
+  left: 35%;
   top: 50%;
 }
 .gpu_temperature {
-  left: 55%;
+  left: 65%;
   top: 50%;
 }
 

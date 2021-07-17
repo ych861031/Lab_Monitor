@@ -7,6 +7,7 @@ import {
 } from "react-circular-progressbar";
 import { easeQuadInOut } from "d3-ease";
 import AnimatedProgressProvider from "./AnimatedProgressProvider";
+import Select from "react-select";
 
 function Ip_list(props) {
   return props.ip_datas.map((data) => (
@@ -23,6 +24,21 @@ function Ip_list(props) {
         style={{ backgroundColor: props.font_color }}
       ></div>
     </div>
+  ));
+}
+
+function GPU_id_list(props) {
+  return props.gpu_id_list.map((data) => (
+    <select>
+      {/* <div
+        className="gpu_id_list"
+        style={{ color: props.font_color, borderColor: props.font_color }}
+        // onClick={props.onClick}
+      >
+        {data}
+      </div> */}
+      <option value={data}>{data}</option>
+    </select>
   ));
 }
 
@@ -310,7 +326,7 @@ class App extends React.Component {
         });
     }
   }
-  axios_getdata(query_ip) {
+  axios_getdata(query_ip, id) {
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
     let gpu_id_list = [];
     let timestamp_list = [];
@@ -330,11 +346,18 @@ class App extends React.Component {
           gpu_utilizations_list.push(item.gpu_utilizations);
           gpu_temperature_list.push(item.gpu_temperature);
         });
+        gpu_id_list = gpu_id_list.reverse();
+        timestamp_list = timestamp_list.reverse();
+        gpu_memory_uses_list = gpu_memory_uses_list.reverse();
+        gpu_memory_all_list = gpu_memory_all_list.reverse();
+        gpu_utilizations_list = gpu_utilizations_list.reverse();
+        gpu_temperature_list = gpu_temperature_list.reverse();
+
         const gpu_utilizations = gpu_utilizations_list[0];
         const gpu_memory_uses = Math.round(
-          (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
+          (gpu_memory_uses_list[id] * 100) / gpu_memory_all_list[id]
         );
-        const gpu_temperature = gpu_temperature_list[0];
+        const gpu_temperature = gpu_temperature_list[id];
         console.log(gpu_utilizations);
         console.log(gpu_memory_uses);
         console.log(gpu_temperature);
@@ -353,11 +376,11 @@ class App extends React.Component {
         } else if (gpu_temperature > 80) {
           this.setState({ temperature_color: "#FF758F" });
         }
-        let timestamp = new Date(timestamp_list[0] * 1000);
+        let timestamp = new Date(timestamp_list[id] * 1000);
         console.log(timestamp);
         let now = new Date();
         now = now.getTime();
-        let time_difference = (now - timestamp_list[0] * 1000) / 60000;
+        let time_difference = (now - timestamp_list[id] * 1000) / 60000;
         if (isNaN(timestamp.getFullYear()) || time_difference >= 30) {
           this.setState({
             ip_title: query_ip,
@@ -389,14 +412,14 @@ class App extends React.Component {
             gpu_temperature_list: gpu_temperature_list,
 
             ip_title: query_ip,
-            gpu_id: gpu_id_list[0],
+            gpu_id: gpu_id_list[id],
             timestamp: timestamp,
             gpu_memory_uses: Math.round(
-              (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
+              (gpu_memory_uses_list[id] * 100) / gpu_memory_all_list[id]
             ),
-            gpu_memory_all: gpu_memory_all_list[0],
-            gpu_utilizations: gpu_utilizations_list[0],
-            gpu_temperature: gpu_temperature_list[0],
+            gpu_memory_all: gpu_memory_all_list[id],
+            gpu_utilizations: gpu_utilizations_list[id],
+            gpu_temperature: gpu_temperature_list[id],
           });
         }
       });
@@ -412,7 +435,7 @@ class App extends React.Component {
     $(".data_info").show();
     let query_ip = event.currentTarget.innerHTML;
     this.getdata_Interval = setInterval(
-      () => this.axios_getdata(query_ip),
+      () => this.axios_getdata(query_ip, 0),
       3000
     );
     anime
@@ -430,8 +453,38 @@ class App extends React.Component {
         offset: "-=250",
       });
   }
+  changeid(props) {
+    let id = props.value;
+    clearInterval(this.getdata_Interval);
+    this.getdata_Interval = setInterval(
+      () => this.axios_getdata(this.state.ip_title, id),
+      3000
+    );
+  }
   render() {
     let server_count = this.state.ip_datas.length;
+    let gpu_id_style = {
+      option: (styles) => ({
+        ...styles,
+        color: "#272640",
+        fontSize: 16,
+        fontWeight: "normal",
+      }),
+      placeholder: (styles) => ({
+        ...styles,
+        fontSize: 16,
+        fontWeight: "normal",
+      }),
+      control: (base) => ({
+        ...base,
+        height: 40,
+        fontSize: 16,
+      }),
+    };
+    let gpu_id_options = this.state.gpu_id_list.map((data) => ({
+      value: data,
+      label: data,
+    }));
     return (
       <div>
         <div>
@@ -499,15 +552,26 @@ class App extends React.Component {
         >
           {this.state.ip_title}
         </div>
-        <div
-          className="data_info"
-          style={{ color: this.state.font_color, display: "none" }}
-        >
-          ID:&emsp;{this.state.gpu_id}
+        <div className="data_info" style={{ display: "none" }}>
+          <div style={{ color: this.state.font_color }}>ID:</div>
+          <Select
+            className="gpu_id_list"
+            value={{
+              label: this.state.gpu_id,
+              value: this.state.gpu_id,
+            }}
+            onChange={(value) => this.changeid(value)}
+            options={gpu_id_options}
+            styles={gpu_id_style}
+          />
           <br />
-          使用者:&emsp;{this.state.user_name}
+          <div style={{ color: this.state.font_color }}>
+            使用者:&emsp;{this.state.user_name}
+          </div>
           <br />
-          資料更新時間:&emsp;{this.state.timestamp}
+          <div style={{ color: this.state.font_color }}>
+            資料更新時間:&emsp;{this.state.timestamp}
+          </div>
         </div>
         <div
           className="GPU_info gpu_utilizations"
