@@ -20,6 +20,8 @@ from database.views import DatabaseViewSet
 
 urlpatterns = [
     path('api/serverInfo/<str:family>/', DatabaseViewSet.serverInfo),
-    path('api/gpuInfo/<str:ip>/', DatabaseViewSet.gpuInfo)
+    path('api/gpuInfo/<str:ip>/', DatabaseViewSet.gpuInfo),
+    path('api/delete_oldInfo/<str:ip>/', DatabaseViewSet.delete_oldInfo)
+
 
 ]

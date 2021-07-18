@@ -23,10 +23,21 @@ class ConnectDB():
         conn = self.conn()
         with conn.cursor() as cursor:
             df = pd.read_sql(sql, con=conn)
+        cursor.close()
+
         return json.loads(df.to_json(orient='records'))
 
     def getDFReponse(self, sql):
         conn = self.conn()
         with conn.cursor() as cursor:
             df = pd.read_sql(sql, con=conn)
+        cursor.close()
         return df
+
+    def sendRequest(self, sql):
+        conn = self.conn()
+        with conn.cursor() as cursor:
+            cursor.execute(sql)
+            results = conn.commit()
+        cursor.close()
+        return results

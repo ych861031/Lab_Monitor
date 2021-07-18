@@ -35,11 +35,12 @@ class DatabaseViewSet(viewsets.ModelViewSet):
         # print(ip)
 
         DB = ConnectDB()
-        sql = "SELECT * FROM `gpu_info` WHERE `ip`='{}' ORDER BY timestamp DESC LIMIT 10;".format(
+        sql = "SELECT * FROM `gpu_info` WHERE `ip`='{}' ORDER BY timestamp DESC LIMIT 4;".format(
             ip)
         df = DB.getDFReponse(sql)
 
         df = df[:len(np.unique(df["gpu_id"]))]
+        df = df.sort_values(by=['gpu_id'], ascending=False)
 
         df["timestamp"] = df["timestamp"].apply(
             lambda x: int(x.timestamp() - 8 * 3600))
@@ -47,3 +48,17 @@ class DatabaseViewSet(viewsets.ModelViewSet):
         result = json.loads(df.to_json(orient="records"))
 
         return JsonResponse(result, status=status.HTTP_200_OK, safe=False)
+
+    @api_view(('GET',))
+    def delete_oldInfo(request, ip=None):
+        """
+            根據 ip 回傳不同server的gpu資訊
+        """
+        # print(request.method)
+        # print(ip)
+
+        DB = ConnectDB()
+        sql = "DELETE FROM `gpu_info` WHERE `ip`='{}'".format(ip)
+        results = DB.sendRequest(sql)
+
+        return JsonResponse({"status": results}, status=status.HTTP_200_OK, safe=False)
