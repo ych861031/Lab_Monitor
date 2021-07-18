@@ -15,6 +15,7 @@ function Ip_list(props) {
         className="ip"
         style={{ color: props.font_color }}
         onClick={props.onClick}
+        onMouseOver={props.onMouseOver}
       >
         {data.ip}
       </div>
@@ -169,12 +170,12 @@ class App extends React.Component {
       ip_datas: [],
       ip_title: "127.0.0.1",
       gpu_id_list: [],
-      timestamp_list: "2021/06/29",
+      timestamp_list: [],
       gpu_memory_uses_list: [],
       gpu_memory_all_list: [],
       gpu_utilizations_list: [],
       gpu_temperature_list: [],
-      timestamp: "2021/06/29",
+      timestamp: "- - -",
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
@@ -191,6 +192,7 @@ class App extends React.Component {
     this.arrowzhengOut = this.arrowzhengOut.bind(this);
     this.arrowzhengClick = this.arrowzhengClick.bind(this);
     this.ipClick = this.ipClick.bind(this);
+    this.iphover = this.iphover.bind(this);
     this.axios_getdata = this.axios_getdata.bind(this);
   }
 
@@ -345,6 +347,16 @@ class App extends React.Component {
         $("#fan").hide();
       });
     } else if (this.state.current_page == "GPU_info") {
+      this.setState({
+        ip_title: "127.0.0.1",
+        timestamp: "- - -",
+        gpu_id_list: [],
+        timestamp_list: [],
+        gpu_memory_uses_list: [],
+        gpu_memory_all_list: [],
+        gpu_utilizations_list: [],
+        gpu_temperature_list: [],
+      });
       clearInterval(this.getdata_Interval);
       this.setState({ current_page: "server_info" });
       $("#fan").show();
@@ -424,6 +436,16 @@ class App extends React.Component {
         $("#zheng").hide();
       });
     } else if (this.state.current_page == "GPU_info") {
+      this.setState({
+        ip_title: "127.0.0.1",
+        timestamp: "- - -",
+        gpu_id_list: [],
+        timestamp_list: [],
+        gpu_memory_uses_list: [],
+        gpu_memory_all_list: [],
+        gpu_utilizations_list: [],
+        gpu_temperature_list: [],
+      });
       clearInterval(this.getdata_Interval);
       this.setState({ current_page: "server_info" });
       $("#zheng").show();
@@ -452,7 +474,7 @@ class App extends React.Component {
         });
     }
   }
-  axios_getdata(query_ip, id) {
+  axios_getdata(query_ip) {
     let url = `http://140.115.51.115:9999/api/gpuInfo/${query_ip}/`;
     let gpu_id_list = [];
     let timestamp_list = [];
@@ -484,9 +506,9 @@ class App extends React.Component {
           (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
         );
         const gpu_temperature = gpu_temperature_list[0];
-        console.log(gpu_utilizations);
-        console.log(gpu_memory_uses);
-        console.log(gpu_temperature);
+        // console.log(gpu_utilizations);
+        // console.log(gpu_memory_uses);
+        // console.log(gpu_temperature);
         if (gpu_utilizations >= 40 && gpu_utilizations <= 80) {
           this.setState({ utilazations_color: "#FFF3B0" });
         } else if (gpu_utilizations > 80) {
@@ -545,6 +567,10 @@ class App extends React.Component {
         }
       });
   }
+  iphover(event) {
+    let query_ip = event.currentTarget.innerHTML;
+    this.axios_getdata(query_ip);
+  }
   ipClick(event) {
     this.setState({ current_page: "GPU_info" });
     $("#fan").hide();
@@ -556,8 +582,9 @@ class App extends React.Component {
     $(".data_info").show();
     $(".GPU_block").show();
     let query_ip = event.currentTarget.innerHTML;
+    this.axios_getdata(query_ip);
     this.getdata_Interval = setInterval(
-      () => this.axios_getdata(query_ip, 0),
+      () => this.axios_getdata(query_ip),
       3000
     );
     anime
@@ -574,14 +601,6 @@ class App extends React.Component {
         easing: "easeInOutQuad",
         offset: "-=250",
       });
-  }
-  changeid(props) {
-    let id = props.value;
-    clearInterval(this.getdata_Interval);
-    this.getdata_Interval = setInterval(
-      () => this.axios_getdata(this.state.ip_title, id),
-      3000
-    );
   }
   render() {
     let server_count = this.state.ip_datas.length;
@@ -622,6 +641,7 @@ class App extends React.Component {
             ip_datas={this.state.ip_datas}
             font_color={this.state.font_color}
             onClick={this.ipClick}
+            onMouseOver={this.iphover}
           ></Ip_list>
         </div>
         <div
