@@ -7,7 +7,6 @@ import {
 } from "react-circular-progressbar";
 import { easeQuadInOut } from "d3-ease";
 import AnimatedProgressProvider from "./AnimatedProgressProvider";
-import Select from "react-select";
 
 function Ip_list(props) {
   return props.ip_datas.map((data) => (
@@ -27,18 +26,134 @@ function Ip_list(props) {
   ));
 }
 
-function GPU_id_list(props) {
-  return props.gpu_id_list.map((data) => (
-    <select>
-      {/* <div
-        className="gpu_id_list"
-        style={{ color: props.font_color, borderColor: props.font_color }}
-        // onClick={props.onClick}
+function GpuInfo(props) {
+  let gpu_id_list = props.gpu_id_list;
+  let gpu_memory_uses_list = props.gpu_memory_uses_list;
+  let gpu_memory_all_list = props.gpu_memory_all_list;
+  let gpu_utilizations_list = props.gpu_utilizations_list;
+  let gpu_temperature_list = props.gpu_temperature_list;
+  let gpu_item_list = [];
+  props.gpu_id_list.forEach(function (item) {
+    gpu_item_list.push([
+      gpu_id_list[item],
+      gpu_utilizations_list[item],
+      Math.round(
+        (gpu_memory_uses_list[item] * 100) / gpu_memory_all_list[item]
+      ),
+      gpu_temperature_list[item],
+    ]);
+  });
+  return gpu_id_list.map((item) => (
+    <div className="GPU_block_item" style={{ borderColor: props.font_color }}>
+      <div className="id_circle" style={{ color: props.font_color }}>
+        id&ensp;{item}
+      </div>
+      <div
+        className="GPU_info gpu_utilizations"
+        style={{ color: props.font_color }}
       >
-        {data}
-      </div> */}
-      <option value={data}>{data}</option>
-    </select>
+        <AnimatedProgressProvider
+          valueStart={0}
+          valueEnd={gpu_item_list[item][1]}
+          duration={1.4}
+          easingFunction={easeQuadInOut}
+        >
+          {(value) => {
+            const roundedValue = Math.round(value);
+            return (
+              <CircularProgressbarWithChildren
+                circleRatio={0.7}
+                value={value}
+                strokeWidth={5}
+                text={`${roundedValue}%`}
+                styles={buildStyles({
+                  pathTransition: "none",
+                  rotation: 0.65,
+                  strokeLinecap: "butt",
+                  textSize: "12px",
+                  pathTransitionDuration: 0.5,
+                  pathColor: props.utilazations_color,
+                  textColor: props.font_color,
+                  trailColor: `rgba(173, 181, 189, 0.95)`,
+                })}
+              >
+                <div className="GPU_datil">GPU使用率</div>
+              </CircularProgressbarWithChildren>
+            );
+          }}
+        </AnimatedProgressProvider>
+      </div>
+      <div
+        className="GPU_info gpu_memory_uses"
+        style={{ color: props.font_color }}
+      >
+        <AnimatedProgressProvider
+          valueStart={0}
+          valueEnd={gpu_item_list[item][2]}
+          duration={1.4}
+          easingFunction={easeQuadInOut}
+        >
+          {(value) => {
+            const roundedValue = Math.round(value);
+            return (
+              <CircularProgressbarWithChildren
+                circleRatio={0.7}
+                value={value}
+                strokeWidth={5}
+                text={`${roundedValue}%`}
+                styles={buildStyles({
+                  pathTransition: "none",
+                  rotation: 0.65,
+                  strokeLinecap: "butt",
+                  textSize: "12px",
+                  pathTransitionDuration: 0.5,
+                  pathColor: props.memoryuses_color,
+                  textColor: props.font_color,
+                  trailColor: `rgba(173, 181, 189, 0.95)`,
+                })}
+              >
+                <div className="GPU_datil">內存使用率</div>
+              </CircularProgressbarWithChildren>
+            );
+          }}
+        </AnimatedProgressProvider>
+      </div>
+      <div
+        className="GPU_info gpu_temperature"
+        style={{ color: props.font_color }}
+      >
+        <AnimatedProgressProvider
+          valueStart={0}
+          valueEnd={gpu_item_list[item][3]}
+          duration={1.4}
+          easingFunction={easeQuadInOut}
+        >
+          {(value) => {
+            const roundedValue = Math.round(value);
+            return (
+              <CircularProgressbarWithChildren
+                circleRatio={0.7}
+                value={value}
+                strokeWidth={5}
+                text={`${roundedValue}℃`}
+                styles={buildStyles({
+                  pathTransition: "none",
+                  rotation: 0.65,
+                  strokeLinecap: "butt",
+                  textSize: "12px",
+                  pathTransitionDuration: 0.5,
+                  pathColor: props.temperature_color,
+                  textColor: props.font_color,
+                  trailColor: `rgba(173, 181, 189, 0.95)`,
+                })}
+              >
+                <div className="GPU_datil">GPU溫度</div>
+              </CircularProgressbarWithChildren>
+            );
+          }}
+        </AnimatedProgressProvider>
+      </div>
+    </div>
   ));
 }
 
@@ -59,12 +174,7 @@ class App extends React.Component {
       gpu_memory_all_list: [],
       gpu_utilizations_list: [],
       gpu_temperature_list: [],
-      gpu_id: 0,
       timestamp: "2021/06/29",
-      gpu_memory_uses: 0,
-      gpu_memory_all: 0,
-      gpu_utilizations: 0,
-      gpu_temperature: 0,
       utilazations_color: "#95D5B2",
       memoryuses_color: "#95D5B2",
       temperature_color: "#95D5B2",
@@ -138,7 +248,8 @@ class App extends React.Component {
             targets: [".arrowfan"],
             opacity: [0, 0.4],
             easing: "easeInOutQuad",
-            offset: "-=100",
+            offset: "-=200",
+            duration: 100,
           });
       });
   }
@@ -179,7 +290,8 @@ class App extends React.Component {
         targets: [".arrowzheng"],
         opacity: [0, 0.4],
         easing: "easeInOutQuad",
-        offset: "-=100",
+        offset: "-=200",
+        duration: 100,
       });
   }
   arrowfanHover() {
@@ -221,6 +333,12 @@ class App extends React.Component {
           opacity: [1, 0],
           easing: "easeInOutQuad",
           offset: "-=500",
+        })
+        .add({
+          targets: [".server_count", ".ip", ".ip_line"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=500",
         });
       sleep(600).then(() => {
         $("#fan_ori").show();
@@ -232,6 +350,7 @@ class App extends React.Component {
       $("#fan").show();
       $(".ip_list").show();
       $(".server_count").show();
+      $(".GPU_block").hide();
       $(".GPU_info").hide();
       $(".ip_title").hide();
       $(".data_info").hide();
@@ -293,6 +412,12 @@ class App extends React.Component {
           opacity: [1, 0],
           easing: "easeInOutQuad",
           offset: "-=500",
+        })
+        .add({
+          targets: [".server_count", ".ip", ".ip_line"],
+          opacity: [1, 0],
+          easing: "easeInOutQuad",
+          offset: "-=500",
         });
       sleep(600).then(() => {
         $("#zheng_ori").show();
@@ -304,6 +429,7 @@ class App extends React.Component {
       $("#zheng").show();
       $(".ip_list").show();
       $(".server_count").show();
+      $(".GPU_block").hide();
       $(".GPU_info").hide();
       $(".ip_title").hide();
       $(".data_info").hide();
@@ -355,9 +481,9 @@ class App extends React.Component {
 
         const gpu_utilizations = gpu_utilizations_list[0];
         const gpu_memory_uses = Math.round(
-          (gpu_memory_uses_list[id] * 100) / gpu_memory_all_list[id]
+          (gpu_memory_uses_list[0] * 100) / gpu_memory_all_list[0]
         );
-        const gpu_temperature = gpu_temperature_list[id];
+        const gpu_temperature = gpu_temperature_list[0];
         console.log(gpu_utilizations);
         console.log(gpu_memory_uses);
         console.log(gpu_temperature);
@@ -376,19 +502,21 @@ class App extends React.Component {
         } else if (gpu_temperature > 80) {
           this.setState({ temperature_color: "#FF758F" });
         }
-        let timestamp = new Date(timestamp_list[id] * 1000);
+        let timestamp = new Date(timestamp_list[0] * 1000);
         console.log(timestamp);
         let now = new Date();
         now = now.getTime();
-        let time_difference = (now - timestamp_list[id] * 1000) / 60000;
+        let time_difference = (now - timestamp_list[0] * 1000) / 60000;
         if (isNaN(timestamp.getFullYear()) || time_difference >= 30) {
           this.setState({
             ip_title: query_ip,
-            gpu_id: "離線",
             timestamp: "離線",
-            gpu_memory_uses: 0,
-            gpu_utilizations: 0,
-            gpu_temperature: 0,
+            gpu_id_list: [],
+            timestamp_list: [],
+            gpu_memory_uses_list: [],
+            gpu_memory_all_list: [],
+            gpu_utilizations_list: [],
+            gpu_temperature_list: [],
           });
         } else {
           timestamp =
@@ -412,14 +540,7 @@ class App extends React.Component {
             gpu_temperature_list: gpu_temperature_list,
 
             ip_title: query_ip,
-            gpu_id: gpu_id_list[id],
             timestamp: timestamp,
-            gpu_memory_uses: Math.round(
-              (gpu_memory_uses_list[id] * 100) / gpu_memory_all_list[id]
-            ),
-            gpu_memory_all: gpu_memory_all_list[id],
-            gpu_utilizations: gpu_utilizations_list[id],
-            gpu_temperature: gpu_temperature_list[id],
           });
         }
       });
@@ -433,6 +554,7 @@ class App extends React.Component {
     $(".GPU_info").show();
     $(".ip_title").show();
     $(".data_info").show();
+    $(".GPU_block").show();
     let query_ip = event.currentTarget.innerHTML;
     this.getdata_Interval = setInterval(
       () => this.axios_getdata(query_ip, 0),
@@ -463,28 +585,6 @@ class App extends React.Component {
   }
   render() {
     let server_count = this.state.ip_datas.length;
-    let gpu_id_style = {
-      option: (styles) => ({
-        ...styles,
-        color: "#272640",
-        fontSize: 16,
-        fontWeight: "normal",
-      }),
-      placeholder: (styles) => ({
-        ...styles,
-        fontSize: 16,
-        fontWeight: "normal",
-      }),
-      control: (base) => ({
-        ...base,
-        height: 40,
-        fontSize: 16,
-      }),
-    };
-    let gpu_id_options = this.state.gpu_id_list.map((data) => ({
-      value: data,
-      label: data,
-    }));
     return (
       <div>
         <div>
@@ -553,18 +653,6 @@ class App extends React.Component {
           {this.state.ip_title}
         </div>
         <div className="data_info" style={{ display: "none" }}>
-          <div style={{ color: this.state.font_color }}>ID:</div>
-          <Select
-            className="gpu_id_list"
-            value={{
-              label: this.state.gpu_id,
-              value: this.state.gpu_id,
-            }}
-            onChange={(value) => this.changeid(value)}
-            options={gpu_id_options}
-            styles={gpu_id_style}
-          />
-          <br />
           <div style={{ color: this.state.font_color }}>
             使用者:&emsp;{this.state.user_name}
           </div>
@@ -573,110 +661,18 @@ class App extends React.Component {
             資料更新時間:&emsp;{this.state.timestamp}
           </div>
         </div>
-        <div
-          className="GPU_info gpu_utilizations"
-          style={{ color: this.state.font_color, display: "none" }}
-        >
-          <AnimatedProgressProvider
-            valueStart={0}
-            valueEnd={this.state.gpu_utilizations}
-            duration={1.4}
-            easingFunction={easeQuadInOut}
-          >
-            {(value) => {
-              const roundedValue = Math.round(value);
-              return (
-                <CircularProgressbarWithChildren
-                  circleRatio={0.7}
-                  value={value}
-                  strokeWidth={5}
-                  text={`${roundedValue}%`}
-                  styles={buildStyles({
-                    pathTransition: "none",
-                    rotation: 0.65,
-                    strokeLinecap: "butt",
-                    textSize: "12px",
-                    pathTransitionDuration: 0.5,
-                    pathColor: this.state.utilazations_color,
-                    textColor: this.state.font_color,
-                    trailColor: `rgba(173, 181, 189, 0.95)`,
-                  })}
-                >
-                  <div className="GPU_datil">GPU使用率</div>
-                </CircularProgressbarWithChildren>
-              );
-            }}
-          </AnimatedProgressProvider>
-        </div>
-        <div
-          className="GPU_info gpu_memory_uses"
-          style={{ color: this.state.font_color, display: "none" }}
-        >
-          <AnimatedProgressProvider
-            valueStart={0}
-            valueEnd={this.state.gpu_memory_uses}
-            duration={1.4}
-            easingFunction={easeQuadInOut}
-          >
-            {(value) => {
-              const roundedValue = Math.round(value);
-              return (
-                <CircularProgressbarWithChildren
-                  circleRatio={0.7}
-                  value={value}
-                  strokeWidth={5}
-                  text={`${roundedValue}%`}
-                  styles={buildStyles({
-                    pathTransition: "none",
-                    rotation: 0.65,
-                    strokeLinecap: "butt",
-                    textSize: "12px",
-                    pathTransitionDuration: 0.5,
-                    pathColor: this.state.memoryuses_color,
-                    textColor: this.state.font_color,
-                    trailColor: `rgba(173, 181, 189, 0.95)`,
-                  })}
-                >
-                  <div className="GPU_datil">內存使用率</div>
-                </CircularProgressbarWithChildren>
-              );
-            }}
-          </AnimatedProgressProvider>
-        </div>
-        <div
-          className="GPU_info gpu_temperature"
-          style={{ color: this.state.font_color, display: "none" }}
-        >
-          <AnimatedProgressProvider
-            valueStart={0}
-            valueEnd={this.state.gpu_temperature}
-            duration={1.4}
-            easingFunction={easeQuadInOut}
-          >
-            {(value) => {
-              const roundedValue = Math.round(value);
-              return (
-                <CircularProgressbarWithChildren
-                  circleRatio={0.7}
-                  value={value}
-                  strokeWidth={5}
-                  text={`${roundedValue}℃`}
-                  styles={buildStyles({
-                    pathTransition: "none",
-                    rotation: 0.65,
-                    strokeLinecap: "butt",
-                    textSize: "12px",
-                    pathTransitionDuration: 0.5,
-                    pathColor: this.state.temperature_color,
-                    textColor: this.state.font_color,
-                    trailColor: `rgba(173, 181, 189, 0.95)`,
-                  })}
-                >
-                  <div className="GPU_datil">GPU溫度</div>
-                </CircularProgressbarWithChildren>
-              );
-            }}
-          </AnimatedProgressProvider>
+        <div className="GPU_block" style={{ display: "none" }}>
+          <GpuInfo
+            font_color={this.state.font_color}
+            utilazations_color={this.state.utilazations_color}
+            memoryuses_color={this.state.memoryuses_color}
+            temperature_color={this.state.temperature_color}
+            gpu_id_list={this.state.gpu_id_list}
+            gpu_memory_uses_list={this.state.gpu_memory_uses_list}
+            gpu_memory_all_list={this.state.gpu_memory_all_list}
+            gpu_utilizations_list={this.state.gpu_utilizations_list}
+            gpu_temperature_list={this.state.gpu_temperature_list}
+          ></GpuInfo>
         </div>
       </div>
     );
