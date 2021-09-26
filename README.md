@@ -1,4 +1,8 @@
 # Lab_Monitor
+
+### 架構圖
+![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)  
+
 ### Demo video
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/Lab_Monitor.gif)  
 
@@ -8,6 +12,3 @@
 * 紅色: >80%  
 
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/demoIMG.jpg)
-
-### 架構圖
-![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)
