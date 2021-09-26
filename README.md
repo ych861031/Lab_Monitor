@@ -5,4 +5,5 @@
 * 綠色: <40%  
 * 黃色: 41%~80%  
 * 紅色: >80%  
+
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/demoIMG.jpg)
