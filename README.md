@@ -8,3 +8,6 @@
 * 紅色: >80%  
 
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/demoIMG.jpg)
+
+### 架構圖
+![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)
