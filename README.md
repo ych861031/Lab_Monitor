@@ -1,6 +1,6 @@
 # Lab_Monitor  
 
-設計此系統方便使用者及時查看server資訊，  
+設計此系統讓使用者方便及時查看server資訊(GPU使用率、內存使用率、溫度)，
 
 ### 架構圖
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)  
