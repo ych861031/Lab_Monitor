@@ -1,4 +1,6 @@
-# Lab_Monitor
+# Lab_Monitor  
+
+設計此系統方便使用者及時查看server資訊，  
 
 ### 架構圖
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)  
