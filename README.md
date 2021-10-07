@@ -1,6 +1,9 @@
 # Lab_Monitor  
 
-設計此系統讓使用者方便及時查看server資訊(GPU使用率、內存使用率、溫度)，
+設計此系統讓使用者方便及時查看server資訊(GPU使用率、內存使用率、溫度)，系統分為三大架構:  
+* 1. 安裝docker container將server資訊傳送至NAS中Database
+* 2. 撰寫Django api至Darabase抓取所需資料
+* 3. 前端頁面以React.js撰寫，使用者發送請求查看訊息  
 
 ### 架構圖
 ![image](https://github.com/ych861031/Lab_Monitor/blob/main/架構圖.jpg)  
