@@ -2,7 +2,7 @@
 
 設計此系統讓使用者方便及時查看server資訊(GPU使用率、內存使用率、溫度)，系統分為三大架構:  
 * 安裝docker container將server資訊傳送至NAS中Database
-* Django實作RESTful api接口至Database抓取所需資料
+* Django實作api接口至Database抓取所需資料
 * 前端頁面以React.js撰寫，使用者發送請求查看訊息  
 
 ### 架構圖
